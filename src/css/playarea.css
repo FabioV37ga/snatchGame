@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    margin-top: 100px;
+}
+
+.playarea {
+    position: relative;
+    width: 1020px;
+    height: 720px;
+    background: purple;
+}
+
