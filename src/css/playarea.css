@@ -1,3 +1,7 @@
+html{
+    background: #040800;
+}
+
 body {
     display: flex;
     justify-content: center;

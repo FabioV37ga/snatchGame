@@ -10,3 +10,7 @@
     background-size: 131px;
     background-repeat: no-repeat;
 }
+
+.playerRight{
+    transform: scaleX(-1);
+}

@@ -3,7 +3,6 @@ class Player {
     static y1 = 380;
     static x2 = Player.x1 + 45;
     static y2 = Player.y1 + 60;
-    static tempo;
 
     static player = document.querySelector(".player")
 
@@ -235,13 +234,28 @@ class Player {
                 Player.x1 -= 1
                 Player.x2 = Player.x1 + 45
                 Player.player.style.left = `${Player.x1}px`
+                Player.faceDirection("left")
                 break;
             case "right":
                 Player.x1 += 1
                 Player.x2 = Player.x1 + 45
                 Player.player.style.left = `${Player.x1}px`
+                Player.faceDirection("right")
                 break;
         }
 
+    }
+
+    static faceDirection(direction){
+        switch(direction){
+            case "right":
+                Player.player.classList.remove("playerLeft")
+                Player.player.classList.add("playerRight")
+                break;
+            case "left":
+                Player.player.classList.remove("playerRight")
+                Player.player.classList.add("playerLeft")
+                break;
+        }
     }
 }
