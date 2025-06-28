@@ -68,13 +68,13 @@ class Player {
         // Overlap duplo (borda das paths)
         for (let i = 0; i <= level.paths.length - 1; i++) {
             // Caso abaixo
-            if (Player.y1 <= level.paths[i].y1 && Player.y2 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
+            if (Player.y1 <= level.paths[i].y1 && Player.y2 > level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
                 // Limitador horizontal
                 if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2)
                     containedPathsBordersY.push(level.paths[i])
             }
             // Caso acima
-            if (Player.y2 >= level.paths[i].y2 && Player.y1 <= level.paths[i].y2 && Player.y1 >= level.paths[i].y1) {
+            if (Player.y2 > level.paths[i].y2 && Player.y1 < level.paths[i].y2 && Player.y1 >= level.paths[i].y1) {
                 // Limitador horizontal
                 if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2)
                     containedPathsBordersY.push(level.paths[i])
@@ -82,13 +82,13 @@ class Player {
 
             // todo:
             // Caso esquerda
-            if (Player.x1 <= level.paths[i].x1 && Player.x2 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2) {
+            if (Player.x1 <= level.paths[i].x1 && Player.x2 > level.paths[i].x1 && Player.x2 <= level.paths[i].x2) {
                 if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
                     containedPathsBordersX.push(level.paths[i])
                 }
             }
             // Caso direita
-            if (Player.x2 >= level.paths[i].x2 && Player.x1 <= level.paths[i].x2 && Player.x1 >= level.paths[i].x1) {
+            if (Player.x2 >= level.paths[i].x2 && Player.x1 < level.paths[i].x2 && Player.x1 >= level.paths[i].x1) {
                 if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
                     containedPathsBordersX.push(level.paths[i])
                 }
