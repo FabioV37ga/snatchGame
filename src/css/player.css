@@ -1,7 +1,12 @@
 .player {
     height: 60px;
     width: 45px;
-    background: orange;
+    /* background: orange; */
+    background: url(../img/mage.gif);
     position: absolute;
     z-index: 2;
+    background-position: center;
+    /* border: 1px solid red; */
+    background-size: 131px;
+    background-repeat: no-repeat;
 }

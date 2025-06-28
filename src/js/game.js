@@ -11,6 +11,7 @@ class Game {
             }
         }, 1);
 
+        // Teste (Troca de fases)
         document.querySelector("body").addEventListener("keydown", function (e) {
             if (e.key == 'p') {
                 Game.currentLevel = Game.currentLevel + 1 <= Level.levels.length - 1 ? Game.currentLevel + 1 : Game.currentLevel

@@ -24,7 +24,7 @@ class Level {
                 top: path.y1,
                 width: path.x2 - path.x1,
                 height: path.y2 - path.y1,
-                background: 'blue'
+                // background: 'blue'
             })
 
             $(".level").append(elementoPath)
