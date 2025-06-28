@@ -67,7 +67,12 @@ var level1 = new Level(
 var level2 = new Level(
     [
         // Quadrado central (200x200)
-        new Path(410, 260, 610, 460)
+        new Path(0, 260, 1020, 460),
+        new Path(0, 460, 200, 720),
+        new Path(820, 0, 1020, 260),
+        new Path(600, 80, 820, 180),
+        new Path(390, 25, 600, 225)
+
     ]
 )
 
