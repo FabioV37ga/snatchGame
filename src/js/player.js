@@ -7,128 +7,7 @@ class Player {
 
     static player = document.querySelector(".player")
 
-    static getPlayerCurrentPaths() {
-        // Seleciona a instância de Level referente ao Game.currentLevel
-        var level = Level.levels
-        for (let i = 0; i <= level.length - 1; i++) {
-            if (level[i].id == Game.currentLevel) {
-                level = level[i];
-                break;
-            }
-        }
 
-        // Marca em quais paths o jogador se encontra
-        var containedPathSingular = [];
-        var containedPathsHorizontal = [];
-        var containedPathsVertical = [];
-        var containedPathsBordersY = []
-        var containedPathsBordersX = []
-
-        // Sem overlap horizontal e vertical
-        for (let i = 0; i <= level.paths.length - 1; i++) {
-            if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2) {
-                if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
-                    containedPathSingular.push(level.paths[i])
-                }
-            }
-        }
-
-        // Overlap vertical
-        for (let i = 0; i <= level.paths.length - 1; i++) {
-            // Vertical abaixo
-            if ((Player.y1 <= level.paths[i].y1 && Player.y2 >= level.paths[i].y1)) {
-                // Limitador horizontal
-                if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2)
-                    containedPathsVertical.push(level.paths[i])
-            }
-            // Vertical acima
-            if (Player.y1 <= level.paths[i].y2 && Player.y2 >= level.paths[i].y2) {
-                if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2)
-                    containedPathsVertical.push(level.paths[i])
-            }
-        }
-
-        // Overlap horizontal
-        for (let i = 0; i <= level.paths.length - 1; i++) {
-            // Horizontal a esquerda
-            if (Player.x1 <= level.paths[i].x2 && Player.x2 >= level.paths[i].x2) {
-                // Limitador vertical
-                if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2)
-                    containedPathsHorizontal.push(level.paths[i])
-            }
-            // Horizontal a direita
-            if (Player.x1 <= level.paths[i].x1 && Player.x2 >= level.paths[i].x1) {
-                // limitador vertical
-                if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
-                    containedPathsHorizontal.push(level.paths[i])
-                }
-            }
-        }
-
-        // Overlap duplo (borda das paths)
-        for (let i = 0; i <= level.paths.length - 1; i++) {
-            // Caso abaixo
-            if (Player.y1 <= level.paths[i].y1 && Player.y2 > level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
-                // Limitador horizontal
-                if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2)
-                    containedPathsBordersY.push(level.paths[i])
-            }
-            // Caso acima
-            if (Player.y2 > level.paths[i].y2 && Player.y1 < level.paths[i].y2 && Player.y1 >= level.paths[i].y1) {
-                // Limitador horizontal
-                if (Player.x1 >= level.paths[i].x1 && Player.x2 <= level.paths[i].x2)
-                    containedPathsBordersY.push(level.paths[i])
-            }
-
-            // todo:
-            // Caso esquerda
-            if (Player.x1 <= level.paths[i].x1 && Player.x2 > level.paths[i].x1 && Player.x2 <= level.paths[i].x2) {
-                if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
-                    containedPathsBordersX.push(level.paths[i])
-                }
-            }
-            // Caso direita
-            if (Player.x2 >= level.paths[i].x2 && Player.x1 < level.paths[i].x2 && Player.x1 >= level.paths[i].x1) {
-                if (Player.y1 >= level.paths[i].y1 && Player.y2 <= level.paths[i].y2) {
-                    containedPathsBordersX.push(level.paths[i])
-                }
-            }
-
-
-        }
-        // Tratamento dos casos duplos
-        // Tratamento Y
-        var menorPathBorderY = 100000;
-        var priorityPathBorderY;
-
-        for (let i = 0; i <= containedPathsBordersY.length - 1; i++) {
-            if (menorPathBorderY > containedPathsBordersY[i].x2 - containedPathsBordersY[i].x1) {
-                menorPathBorderY = containedPathsBordersY[i].x2 - containedPathsBordersY[i].x1
-                priorityPathBorderY = containedPathsBordersY[i]
-            }
-        }
-        // Tratamento X
-        var menorPathBorderX = 100000;
-        var priorityPathBorderX;
-
-        for (let i = 0; i <= containedPathsBordersX.length - 1; i++) {
-            if (menorPathBorderX > containedPathsBordersX[i].y2 - containedPathsBordersX[i].y1) {
-                menorPathBorderX = containedPathsBordersX[i].y2 - containedPathsBordersX[i].y1
-                priorityPathBorderX = containedPathsBordersX[i]
-            }
-        }
-        // console.log('single')
-        // console.log(containedPathSingular)
-        // console.log('vertical ')
-        // console.log(containedPathsVertical)
-        // console.log('horizontal ')
-        // console.log(containedPathsHorizontal)
-
-        // Return
-
-        return [containedPathSingular, containedPathsVertical, containedPathsHorizontal, priorityPathBorderY, priorityPathBorderX]
-
-    }
 
     static canPlayerMove() {
         if (Binds.up == true && Binds.down == false) {
@@ -156,7 +35,7 @@ class Player {
         }
 
         function podeMover(direcao) {
-            var paths = Player.getPlayerCurrentPaths()
+            var paths = Game.getTargetCurrentPaths(Player)
 
             var walkableY = paths[3]
             var walkableX = paths[4]
