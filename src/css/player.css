@@ -11,6 +11,16 @@
     background-repeat: no-repeat;
 }
 
+.player::before{
+    content: '';
+    width: 3060px;
+    height: 2160px;
+    margin-left: -1500px;
+    margin-top: -1058px;
+    position: absolute;
+    background: url(../img/light.png);
+}
+
 .playerRight{
     transform: scaleX(-1);
 }

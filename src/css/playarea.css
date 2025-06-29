@@ -19,6 +19,7 @@ main {
     background: url(../img/tile.jpg);
     background-size: 200px;
     /* background: url(../img/wall.jpg) */
+    overflow: hidden;
 }
 
 .playarea::before {
