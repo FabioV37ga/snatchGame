@@ -11,7 +11,8 @@
     background-repeat: no-repeat;
 }
 
-.player::before{
+.player::before {
+    z-index: 3;
     content: '';
     width: 3060px;
     height: 2160px;
@@ -21,6 +22,16 @@
     background: url(../img/light.png);
 }
 
-.playerRight{
+.playerRight {
     transform: scaleX(-1);
+}
+
+.sword {
+    width: 120px;
+    height: 60px;
+    position: absolute;
+    left: -24px;
+    z-index: 3;
+    background-size: contain;
+    background-repeat: no-repeat;
 }

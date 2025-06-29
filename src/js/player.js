@@ -3,6 +3,7 @@ class Player {
     static y1 = 380;
     static x2 = Player.x1 + 45;
     static y2 = Player.y1 + 60;
+    static attackCooldown = false;
 
     static player = document.querySelector(".player")
 
@@ -246,8 +247,8 @@ class Player {
 
     }
 
-    static faceDirection(direction){
-        switch(direction){
+    static faceDirection(direction) {
+        switch (direction) {
             case "right":
                 Player.player.classList.remove("playerLeft")
                 Player.player.classList.add("playerRight")
@@ -256,6 +257,31 @@ class Player {
                 Player.player.classList.remove("playerRight")
                 Player.player.classList.add("playerLeft")
                 break;
+        }
+    }
+
+    static attack() {
+        var sword = document.querySelector(".sword")
+        var audio = new Audio("src/img/attack/swoosh.mp3")
+        audio.currentTime = 0.15
+        audio.volume = 0.35
+
+        if (Player.attackCooldown == false) {
+            Player.attackCooldown = true
+            console.log("attack")
+
+            var index = 0;
+            var intervalo = setInterval(() => {
+                audio.play()
+                if (index <= 4) {
+                    sword.style.backgroundImage = `url(src/img/attack/attack${index}.png)`
+                    index++
+                } else {
+                    sword.style.backgroundImage = ""
+                    Player.attackCooldown = false
+                    clearInterval(intervalo)
+                }
+            }, 40);
         }
     }
 }

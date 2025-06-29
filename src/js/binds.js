@@ -60,6 +60,13 @@ class Binds {
             }
         })
 
+        playarea.addEventListener("keydown", function (e){
+            if(e.keyCode == 32){
+                
+                Player.attack()
+            }
+        })
+
         // Log dos estados de movimentação de acordo com as teclas pressionadas
         // playarea.addEventListener("keypress", () => {
         //     console.clear()
