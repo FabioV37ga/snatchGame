@@ -9,7 +9,6 @@ class Enemy {
     y2;
     enemyElement;
     movingEnabled = true;;
-    // todo: Facing direction para controlar a direção da animação do hurt
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -27,21 +26,25 @@ class Enemy {
     }
 
     static alwaysCheck() {
+        /* Método responsável por constantemente verificar se existe um player nas proximidades dessa
+        instância de Enemy
+        */
         var intervalo = setInterval(() => {
             for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
-                if (Enemy.enemies[i].movingEnabled == true){
+                if (Enemy.enemies[i].movingEnabled == true) {
                     var check = Enemy.enemies[i].checkForPlayer()
                     if (check) {
                         // console.log("id: " + i + " -> " + true + ',' + check)
                         Enemy.enemies[i].canEnemyMove(check[0])
                         Enemy.enemies[i].canEnemyMove(check[1])
-                }
+                    }
                 }
             }
         }, 20);
     }
 
     createEnemy() {
+        // Método responsável por criar o elemento referente a essa instância de Enemy
         var elementoEnemy = $(`<div value="${this.id}" class="enemy ${this.type}">${this.id}</div>`).css({
             left: this.x1,
             top: this.y1,
@@ -55,8 +58,8 @@ class Enemy {
     }
 
     canEnemyMove(direction) {
+        // Método responsável por verificar se o inimigo pode se movimentar numa direção num quadrante
         switch (direction) {
-            // Player acima, mover acima
             case "above":
                 if (Game.podeMover(this, "up") == true) {
                     this.move("up")
@@ -90,6 +93,7 @@ class Enemy {
 
         function checkX() {
             var playerPositionX;
+            // Retorna a posição do player em referência ao inimigo (Contained, esquerda ou direita)
             if ((Player.x1 <= self.x1 || Player.x2 >= self.x2) ||
                 Player.x1 < self.x1 && Player.x2 > self.x2) {
                 playerPositionX = 'contained'
@@ -107,7 +111,6 @@ class Enemy {
             if (Player.x1 >= sightX1 && Player.x2 <= sightX2) {
                 if (checkY())
                     if (checkY()[0] == true) {
-                        // console.log(playerPositionX, checkY()[1])
                         return [playerPositionX, checkY()[1]]
                     }
             }
@@ -131,6 +134,7 @@ class Enemy {
 
         function checkY() {
             var playerPositionY;
+            // Retorna a posição do player em referência ao inimigo (Contained, abaixo, ou acima)
             if ((Player.y1 == self.y1 || Player.y2 == self.y2) ||
                 Player.y1 < self.y1 && Player.y2 > self.y2) {
                 playerPositionY = 'contained'
@@ -160,7 +164,7 @@ class Enemy {
     }
 
     move(direction) {
-        // console.log(direction)
+        // Método responsável por mover o inimigo
         switch (direction) {
             case "up":
                 this.y1 -= 1
@@ -187,6 +191,7 @@ class Enemy {
         }
     }
     faceDirection(direction) {
+        // Método responsável por trocar visualmente a direção onde o inimigo está olhando
         switch (direction) {
             case "right":
                 this.enemyElement.classList.remove("playerLeft")
@@ -200,26 +205,45 @@ class Enemy {
     }
 
     hurt(direction) {
+        // Audio de hurt
         var audio = new Audio("src/sound/bone.mp3")
         audio.volume = 0.08
         audio.play()
-        console.log(`#${this.id} has been hit`)
+
+        // Inimigo sendo atacado pela direita
         if (direction == "right") {
+            // Desabilita a movimentação do inimigo
             this.movingEnabled = false;
+            // Adiciona animação do inimigo sendo atacado (Jogado para o lado)
             this.enemyElement.classList.add("enemyHitRight")
+            // Adiciona animação do inimigo sendo atacado (Ficando vermelho)
+            this.enemyElement.style.backgroundImage = 'url(src/img/skeleton_hurt.gif)'
+
+            // Depois de .3s (Tempo da animação), retorna os estados visuais originais 
             setTimeout(() => {
+                this.enemyElement.style.backgroundImage = 'url(src/img/skeleton.gif)'
                 this.enemyElement.classList.remove("enemyHitRight")
             }, 300);
+            // Depois de .5s (Tempo de recuperação do inimigo), habilita movimentação novamente
             setTimeout(() => {
                 this.movingEnabled = true;
             }, 500);
         }
+        // Inimigo sendo atacado pela esquerda
         if (direction == "left") {
+            // Desabilita a movimentação do inimigo
             this.movingEnabled = false;
+            // Adiciona animação do inimigo sendo atacado (Jogado pro lado)
             this.enemyElement.classList.add("enemyHitLeft")
+            // Adiciona animação do inimigo sendo atacado (Ficando vermelho)
+            this.enemyElement.style.backgroundImage = 'url(src/img/skeleton_hurt.gif)'
+
+            // Depois de .3s (Tempo da animação), retorna os estados visuais originais
             setTimeout(() => {
+                this.enemyElement.style.backgroundImage = 'url(src/img/skeleton.gif)'
                 this.enemyElement.classList.remove("enemyHitLeft")
             }, 300);
+            // Deopis de .5s (Tempo de recuperação do inimigo), habilita a movimentação novamente
             setTimeout(() => {
                 this.movingEnabled = true;
             }, 500);

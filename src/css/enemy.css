@@ -16,6 +16,16 @@
     z-index: 1;
 }
 
+/* .enemyHitLeft,
+.enemyHitRight {
+    background: url(../img/skeleton_hurt.gif) !important;
+    background-position-x: -17px;
+    background-position-y: -60px;
+    background-size: 130px;
+    background-repeat: no-repeat;
+    z-index: 1;
+} */
+
 .enemyHitRight {
     animation: .3s hurtRight ease;
 }
