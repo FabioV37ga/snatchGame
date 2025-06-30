@@ -4,96 +4,34 @@ class Player {
     static x2 = Player.x1 + 45;
     static y2 = Player.y1 + 60;
     static attackCooldown = false;
+    static isRunning = false;
 
     static player = document.querySelector(".player")
 
-
-
     static canPlayerMove() {
         if (Binds.up == true && Binds.down == false) {
-            if (podeMover("up") == true) {
+            if (Game.podeMover(this, "up") == true) {
                 Player.move("up")
             }
         }
 
         if (Binds.down == true && Binds.up == false) {
-            if (podeMover("down") == true) {
+            if (Game.podeMover(this, "down") == true) {
                 Player.move("down")
             }
         }
 
         if (Binds.left == true && Binds.right == false) {
-            if (podeMover("left") == true) {
+            if (Game.podeMover(this, "left") == true) {
                 Player.move("left")
             }
         }
 
         if (Binds.right == true && Binds.left == false) {
-            if (podeMover("right") == true) {
+            if (Game.podeMover(this, "right") == true) {
                 Player.move("right")
             }
         }
-
-        function podeMover(direcao) {
-            var paths = Game.getTargetCurrentPaths(Player)
-
-            var walkableY = paths[3]
-            var walkableX = paths[4]
-
-            // Lista paths caminhaveis verticalmente
-            var walkableVertical = paths[0].concat(paths[1]);
-            // Aciciona bordas caminhaveis verticalmente, se houverem
-            if (walkableX) {
-                walkableVertical = walkableVertical.concat(walkableX)
-            }
-            // Remove paths duplicadas da lista
-            walkableVertical = Array.from(
-                new Map(walkableVertical.map(obj => [obj.id, obj])).values()
-            );
-            // Ordena paths caminhaveis verticalmente do menor y1 ao maior y1
-            walkableVertical.sort((a, b) => a.y1 - b.y1);
-
-            // Lista paths caminhaveis horizontalmente
-            var walkableHorizontal = paths[0].concat(paths[2]);
-            // Adiciona bordas caminhaveis horizontalmente, se houverem
-            if (walkableY) {
-                walkableHorizontal = walkableHorizontal.concat(walkableY)
-            }
-            // Remove paths duplicadas da lista
-            walkableHorizontal = Array.from(
-                new Map(walkableHorizontal.map(obj => [obj.id, obj])).values()
-            );
-            // Ordena paths caminhaveis horizontalmente do menor x1 ao maior x1
-            walkableHorizontal.sort((a, b) => a.x1 - b.x1);
-
-
-
-            switch (direcao) {
-
-                case "up":
-                    var min = walkableVertical[0].y1
-                    if (Player.y1 - 1 >= min)
-                        return true
-                    break;
-
-                case "down":
-                    var max = walkableVertical[walkableVertical.length - 1].y2
-                    if (Player.y2 + 1 <= max)
-                        return true
-                    break;
-                case "left":
-                    var min = walkableHorizontal[0].x1;
-                    if (Player.x1 - 1 >= min)
-                        return true
-                    break;
-                case "right":
-                    var max = walkableHorizontal[walkableHorizontal.length - 1].x2;
-                    if (Player.x2 + 1 <= max)
-                        return true
-                    break;
-            }
-        }
-
 
     }
 
@@ -123,7 +61,14 @@ class Player {
                 Player.faceDirection("right")
                 break;
         }
+    }
 
+    static run(){
+        Player.isRunning = true;
+    }
+
+    static walk(){
+        Player.isRunning = false;
     }
 
     static faceDirection(direction) {

@@ -5,11 +5,30 @@ class Game {
 
         Player.player.style.left = `${Player.x1}px`
         Player.player.style.top = `${Player.y1}px`
-        var intervalo = setInterval(() => {
-            if (Binds.up == true || Binds.down == true || Binds.left == true || Binds.right == true) {
-                Player.canPlayerMove()
-            }
-        }, 1);
+
+        walk()
+        function walk() {
+            var intervaloWalk = setInterval(() => {
+                if (Binds.up == true || Binds.down == true || Binds.left == true || Binds.right == true) {
+                    Player.canPlayerMove()
+                    if (Player.isRunning == true) {
+                        run()
+                        clearInterval(intervaloWalk)
+                    }
+                }
+            }, 10);
+        }
+        function run() {
+            var intervaloRun = setInterval(() => {
+                if (Binds.up == true || Binds.down == true || Binds.left == true || Binds.right == true) {
+                    Player.canPlayerMove()
+                    if (Player.isRunning == false) {
+                        walk()
+                        clearInterval(intervaloRun)
+                    }
+                }
+            }, 5);
+        }
 
         // Teste (Troca de fases)
         document.querySelector("body").addEventListener("keydown", function (e) {
@@ -48,7 +67,7 @@ class Game {
         }
     }
 
-        static getTargetCurrentPaths(target) {
+    static getTargetCurrentPaths(target) {
         // Seleciona a instância de Level referente ao Game.currentLevel
         var level = Level.levels
         for (let i = 0; i <= level.length - 1; i++) {
@@ -169,6 +188,66 @@ class Game {
 
         return [containedPathSingular, containedPathsVertical, containedPathsHorizontal, priorityPathBorderY, priorityPathBorderX]
 
+    }
+
+    static podeMover(target, direcao) {
+        var paths = Game.getTargetCurrentPaths(target)
+
+        var walkableY = paths[3];
+        var walkableX = paths[4];
+
+        // Lista paths caminhaveis verticalmente
+        var walkableVertical = paths[0].concat(paths[1]);
+        // Aciciona bordas caminhaveis verticalmente, se houverem
+        if (walkableX) {
+            walkableVertical = walkableVertical.concat(walkableX)
+        }
+        // Remove paths duplicadas da lista
+        walkableVertical = Array.from(
+            new Map(walkableVertical.map(obj => [obj.id, obj])).values()
+        );
+        // Ordena paths caminhaveis verticalmente do menor y1 ao maior y1
+        walkableVertical.sort((a, b) => a.y1 - b.y1);
+
+        // Lista paths caminhaveis horizontalmente
+        var walkableHorizontal = paths[0].concat(paths[2]);
+        // Adiciona bordas caminhaveis horizontalmente, se houverem
+        if (walkableY) {
+            walkableHorizontal = walkableHorizontal.concat(walkableY)
+        }
+        // Remove paths duplicadas da lista
+        walkableHorizontal = Array.from(
+            new Map(walkableHorizontal.map(obj => [obj.id, obj])).values()
+        );
+        // Ordena paths caminhaveis horizontalmente do menor x1 ao maior x1
+        walkableHorizontal.sort((a, b) => a.x1 - b.x1);
+
+
+
+        switch (direcao) {
+
+            case "up":
+                var min = walkableVertical[0].y1
+                if (target.y1 - 1 >= min)
+                    return true
+                break;
+
+            case "down":
+                var max = walkableVertical[walkableVertical.length - 1].y2
+                if (target.y2 + 1 <= max)
+                    return true
+                break;
+            case "left":
+                var min = walkableHorizontal[0].x1;
+                if (target.x1 - 1 >= min)
+                    return true
+                break;
+            case "right":
+                var max = walkableHorizontal[walkableHorizontal.length - 1].x2;
+                if (target.x2 + 1 <= max)
+                    return true
+                break;
+        }
     }
 
     static createLevelPaths(level) {

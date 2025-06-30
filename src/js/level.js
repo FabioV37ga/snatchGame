@@ -18,13 +18,14 @@ class Level {
 
     createPaths() {
         for (let i = 0; i <= this.paths.length - 1; i++) {
+
             var path = this.paths[i]
+
             var elementoPath = $(`<div class="path">${path.id}</div>`).css({
                 left: path.x1,
                 top: path.y1,
                 width: path.x2 - path.x1,
-                height: path.y2 - path.y1,
-                // background: 'blue'
+                height: path.y2 - path.y1
             })
 
             $(".level").append(elementoPath)
@@ -33,7 +34,6 @@ class Level {
     }
 
     removePaths() {
-        console.log(this.paths)
         var paths = document.querySelectorAll(".path")
         for (let i = 0; i <= paths.length - 1; i++) {
             paths[i].remove()
@@ -66,7 +66,6 @@ var level1 = new Level(
 
 var level2 = new Level(
     [
-        // Quadrado central (200x200)
         new Path(0, 260, 1020, 460),
         new Path(0, 460, 200, 720),
         new Path(820, 0, 1020, 260),
