@@ -5,6 +5,7 @@ class Player {
     static y2 = Player.y1 + 60;
     static attackCooldown = false;
     static isRunning = false;
+    static facingDirection = 'left';
 
     static player = document.querySelector(".player")
 
@@ -63,11 +64,11 @@ class Player {
         }
     }
 
-    static run(){
+    static run() {
         Player.isRunning = true;
     }
 
-    static walk(){
+    static walk() {
         Player.isRunning = false;
     }
 
@@ -76,10 +77,12 @@ class Player {
             case "right":
                 Player.player.classList.remove("playerLeft")
                 Player.player.classList.add("playerRight")
+                Player.facingDirection = 'right'
                 break;
             case "left":
                 Player.player.classList.remove("playerRight")
                 Player.player.classList.add("playerLeft")
+                Player.facingDirection = 'left'
                 break;
         }
     }
@@ -92,8 +95,9 @@ class Player {
 
         if (Player.attackCooldown == false) {
             Player.attackCooldown = true
-            console.log("attack")
+            // console.log("attack")
 
+            checkForEnemies(Player.facingDirection)
             var index = 0;
             var intervalo = setInterval(() => {
                 audio.play()
@@ -106,6 +110,32 @@ class Player {
                     clearInterval(intervalo)
                 }
             }, 40);
+        }
+
+        function checkForEnemies(direction) {
+            for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
+                switch (direction) {
+                    case 'right':
+                        if (Enemy.enemies[i].x2 >= Player.x1) {
+                            if (Enemy.enemies[i].x1 - 15 <= Player.x2 && Enemy.enemies[i].x2 >= Player.x2) {
+                                if (Enemy.enemies[i].y1 < Player.y2 && Enemy.enemies[i].y2 > Player.y1){
+                                    Enemy.enemies[i].hurt("right")
+                                }
+                            }
+                        }
+                        break;
+                    case 'left':
+                        if (Enemy.enemies[i].x1 <= Player.x2) {
+                            if (Enemy.enemies[i].x2 + 15 >= Player.x1 && Enemy.enemies[i].x1 <= Player.x1) {
+                                if (Enemy.enemies[i].y1 < Player.y2 && Enemy.enemies[i].y2 > Player.y1){
+                                    Enemy.enemies[i].hurt("left")
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
         }
     }
 }

@@ -8,6 +8,8 @@ class Enemy {
     x2;
     y2;
     enemyElement;
+    movingEnabled = true;;
+    // todo: Facing direction para controlar a direção da animação do hurt
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -27,11 +29,13 @@ class Enemy {
     static alwaysCheck() {
         var intervalo = setInterval(() => {
             for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
-                var check = Enemy.enemies[i].checkForPlayer()
-                if (check) {
-                    // console.log("id: " + i + " -> " + true + ',' + check)
-                    Enemy.enemies[i].canEnemyMove(check[0])
-                    Enemy.enemies[i].canEnemyMove(check[1])
+                if (Enemy.enemies[i].movingEnabled == true){
+                    var check = Enemy.enemies[i].checkForPlayer()
+                    if (check) {
+                        // console.log("id: " + i + " -> " + true + ',' + check)
+                        Enemy.enemies[i].canEnemyMove(check[0])
+                        Enemy.enemies[i].canEnemyMove(check[1])
+                }
                 }
             }
         }, 20);
@@ -192,6 +196,33 @@ class Enemy {
                 this.enemyElement.classList.remove("playerRight")
                 this.enemyElement.classList.add("playerLeft")
                 break;
+        }
+    }
+
+    hurt(direction) {
+        var audio = new Audio("src/sound/bone.mp3")
+        audio.volume = 0.08
+        audio.play()
+        console.log(`#${this.id} has been hit`)
+        if (direction == "right") {
+            this.movingEnabled = false;
+            this.enemyElement.classList.add("enemyHitRight")
+            setTimeout(() => {
+                this.enemyElement.classList.remove("enemyHitRight")
+            }, 300);
+            setTimeout(() => {
+                this.movingEnabled = true;
+            }, 500);
+        }
+        if (direction == "left") {
+            this.movingEnabled = false;
+            this.enemyElement.classList.add("enemyHitLeft")
+            setTimeout(() => {
+                this.enemyElement.classList.remove("enemyHitLeft")
+            }, 300);
+            setTimeout(() => {
+                this.movingEnabled = true;
+            }, 500);
         }
     }
 }
