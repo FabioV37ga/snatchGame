@@ -16,34 +16,39 @@
     z-index: 1;
 }
 
-.enemyHitRight{
+.enemyHitRight {
     animation: .3s hurtRight ease;
 }
 
-@keyframes hurtLeft{
-    0%{
+@keyframes hurtLeft {
+    0% {
         transform: translateX(0px)
     }
-    50%{
+
+    50% {
         transform: translateX(-8px)
     }
-    100%{
+
+    100% {
         transform: translateX(0px)
     }
 }
 
-.enemyHitLeft{
+.enemyHitLeft {
     animation: .3s hurtLeft ease;
 }
 
-@keyframes hurtRight{
-    0%{
-        transform: translateX(0px)
+@keyframes hurtRight {
+    0% {
+        transform: translateX(0px) scaleX(-1);
     }
-    50%{
-        transform: translateX(8px)
+
+    50% {
+        transform: translateX(8px) scaleX(-1);
+
     }
-    100%{
-        transform: translateX(0px)
+
+    100% {
+        transform: translateX(0px) scaleX(-1);
     }
 }
