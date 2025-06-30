@@ -67,6 +67,9 @@ class Binds {
             if(e.keyCode == 16){
                 Player.run()
             }
+            if(e.keyCode == 13){
+                Enemy.alwaysCheck()
+            }
         })
 
         playarea.addEventListener("keyup", function(e){

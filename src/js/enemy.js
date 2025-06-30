@@ -169,12 +169,26 @@ class Enemy {
             case "left":
                 this.x1 -= 1
                 this.x2 = this.x1 + 45
+                this.faceDirection("right")
                 this.enemyElement.style.left = this.x1 + 'px'
                 break;
             case "right":
                 this.x1 += 1
                 this.x2 = this.x1 + 45
+                this.faceDirection("left")
                 this.enemyElement.style.left = this.x1 + 'px'
+                break;
+        }
+    }
+        faceDirection(direction) {
+        switch (direction) {
+            case "right":
+                this.enemyElement.classList.remove("playerLeft")
+                this.enemyElement.classList.add("playerRight")
+                break;
+            case "left":
+                this.enemyElement.classList.remove("playerRight")
+                this.enemyElement.classList.add("playerLeft")
                 break;
         }
     }
