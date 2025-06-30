@@ -110,16 +110,18 @@ class Enemy {
 
             // Player está na divisa horizontalmente a direita do inimigo
             if (Player.x1 <= sightX2 && Player.x2 > sightX2 && Player.x1 >= sightX1) {
-                if (checkY()[0] == true) {
-                    return [playerPositionX, checkY()[1]]
-                }
+                if (checkY())
+                    if (checkY()[0] == true) {
+                        return [playerPositionX, checkY()[1]]
+                    }
             }
 
             // Player está na divisa horizontalmente a esquerda do inimigo
             if (Player.x2 >= sightX1 && Player.x1 < sightX1 && Player.x2 <= sightX2) {
-                if (checkY()[0] == true) {
-                    return [playerPositionX, checkY()[1]]
-                }
+                if (checkY())
+                    if (checkY()[0] == true) {
+                        return [playerPositionX, checkY()[1]]
+                    }
             }
         }
 
@@ -180,7 +182,7 @@ class Enemy {
                 break;
         }
     }
-        faceDirection(direction) {
+    faceDirection(direction) {
         switch (direction) {
             case "right":
                 this.enemyElement.classList.remove("playerLeft")
