@@ -95,9 +95,8 @@ class Player {
 
         if (Player.attackCooldown == false) {
             Player.attackCooldown = true
-            // console.log("attack")
 
-            checkForEnemies(Player.facingDirection)
+            checkPlayerHit(Player.facingDirection)
             var index = 0;
             var intervalo = setInterval(() => {
                 audio.play()
@@ -112,7 +111,7 @@ class Player {
             }, 40);
         }
 
-        function checkForEnemies(direction) {
+        function checkPlayerHit(direction) {
             for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
                 switch (direction) {
                     case 'right':
