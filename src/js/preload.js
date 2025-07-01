@@ -10,7 +10,7 @@ var images = [
 ]
 var audios = [
     "src/sound/bone.mp3",
-    "src/img/attack/swoosh.mp3"
+    "src/sound/swoosh.mp3"
 ]
 function preload() {
     for (let i = 0; i <= images.length - 1; i++) {
@@ -18,6 +18,9 @@ function preload() {
     }
     for (let i = 0; i <= audios.length - 1; i++) {
         var audio = new Audio(audios[i])
+        // audio.volume = 0
+        // audio.play()
+        console.log(audio)
     }
     console.log("(Preload) complete")
 }

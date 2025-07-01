@@ -89,7 +89,7 @@ class Player {
 
     static attack() {
         var sword = document.querySelector(".sword")
-        var audio = new Audio("src/img/attack/swoosh.mp3")
+        var audio = new Audio("src/sound/swoosh.mp3")
         audio.currentTime = 0.15
         audio.volume = 0.35
 
