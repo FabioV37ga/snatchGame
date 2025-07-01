@@ -8,7 +8,8 @@ class Enemy {
     x2;
     y2;
     enemyElement;
-    movingEnabled = true;;
+    movingEnabled = true;
+    health;
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -20,6 +21,8 @@ class Enemy {
         this.y1 = y1;
         this.x2 = this.x1 + 35;
         this.y2 = this.y1 + 50;
+
+        this.health = 3
 
         this.createEnemy()
         Enemy.enemies.push(this)
@@ -210,6 +213,8 @@ class Enemy {
         audio.volume = 0.08
         audio.play()
 
+        this.health--
+
         // Inimigo sendo atacado pela direita
         if (direction == "right") {
             // Desabilita a movimentação do inimigo
@@ -247,6 +252,24 @@ class Enemy {
             setTimeout(() => {
                 this.movingEnabled = true;
             }, 500);
+        }
+        // Ao final das animações, verifica a vida dessa instância, se for 0, o inimigo morre
+        setTimeout(() => {
+            if (this.health == 0) {
+                this.die()
+            }
+        }, 300);
+    }
+
+    die() {
+        // Método responsável por eliminar inimigo
+        console.log(`#${this.id} die`)
+        this.enemyElement.remove()
+
+        for (let i = 0; i <= Enemy.enemies.length - 1; i++) { 
+            if (Enemy.enemies[i].id == this.id){
+                // Pop out
+            }
         }
     }
 }
