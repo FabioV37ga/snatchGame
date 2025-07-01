@@ -140,7 +140,6 @@ class Game {
                     containedPathsBordersY.push(level.paths[i])
             }
 
-            // todo:
             // Caso esquerda
             if (target.x1 <= level.paths[i].x1 && target.x2 > level.paths[i].x1 && target.x2 <= level.paths[i].x2) {
                 if (target.y1 >= level.paths[i].y1 && target.y2 <= level.paths[i].y2) {

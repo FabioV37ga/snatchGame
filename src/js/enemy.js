@@ -10,6 +10,7 @@ class Enemy {
     enemyElement;
     movingEnabled = true;
     health;
+    attackCooldown = false;
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -87,10 +88,16 @@ class Enemy {
     }
 
     checkForPlayer() {
+        // Campo de visão do inimigo
         var sightX1 = this.x1 - 150
         var sightY1 = this.y1 - 150
         var sightX2 = this.x2 + 150
         var sightY2 = this.y2 + 150
+
+        var rangeX1 = this.x1
+        var rangeY1 = this.y1;
+        var rangeX2 = this.x2
+        var rangeY2 = this.y2;
 
         var self = this;
 
@@ -114,6 +121,15 @@ class Enemy {
             if (Player.x1 >= sightX1 && Player.x2 <= sightX2) {
                 if (checkY())
                     if (checkY()[0] == true) {
+                        // Player está dentro do range do hit do inimigo
+                        if ((Player.x1 >= rangeX1 && Player.x1 <= rangeX2) ||
+                            Player.x2 >= rangeX1 && Player.x2 <= rangeX2) {
+                            if ((Player.y1 >= rangeY1 && Player.y1 <= rangeY2) ||
+                                Player.y2 >= rangeY1 && Player.y2 <= rangeY2) {
+                                // console.log("Enemy.hit")
+                                self.attack()
+                            }
+                        }
                         return [playerPositionX, checkY()[1]]
                     }
             }
@@ -266,10 +282,28 @@ class Enemy {
         console.log(`#${this.id} die`)
         this.enemyElement.remove()
 
-        for (let i = 0; i <= Enemy.enemies.length - 1; i++) { 
-            if (Enemy.enemies[i].id == this.id){
-                // Pop out
+        for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
+            if (Enemy.enemies[i].id == this.id) {
+                Enemy.enemies.splice(i, 1)
             }
+        }
+    }
+
+    attack() {
+        if (this.attackCooldown == false) {
+            this.movingEnabled = false;
+            this.attackCooldown = true;
+            console.log(`#${this.id} is charging a hit`)
+            setTimeout(() => {
+                console.log(`#${this.id} tried to hit`)
+                this.enemyElement.style.border = '1px solid red'
+                setTimeout(() => {
+                    this.movingEnabled = true;
+                    this.attackCooldown = false
+                    this.enemyElement.style.border = '0'
+                }, 100);
+            }, 800);
+
         }
     }
 }
