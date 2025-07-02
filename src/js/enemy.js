@@ -50,7 +50,7 @@ class Enemy {
 
     createEnemy() {
         // Método responsável por criar o elemento referente a essa instância de Enemy
-        var elementoEnemy = $(`<div value="${this.id}" class="enemy ${this.type}">${this.id}</div>`).css({
+        var elementoEnemy = $(`<div value="${this.id}" class="enemy ${this.type}">${this.id}<div class="hitbox"></div></div>`).css({
             left: this.x1,
             top: this.y1,
             width: this.x2 - this.x1,
@@ -121,8 +121,8 @@ class Enemy {
                         // Player está dentro do range do hit do inimigo
                         if ((Player.x1 >= self.x1 && Player.x1 <= self.x2) ||
                             Player.x2 >= self.x1 && Player.x2 <= self.x2) {
-                            if ((Player.y1 >= self.y1 && Player.y1 <= self.y2) ||
-                                Player.y2 >= self.y1 && Player.y2 <= self.y2) {
+                            if ((Player.y1 >= self.y1 && Player.y1 <= self.y2 - 40) ||
+                                Player.y2 >= self.y1 + 40 && Player.y2 <= self.y2) {
                                 // console.log("Enemy.hit")
                                 self.attack()
                             }
@@ -231,7 +231,7 @@ class Enemy {
 
             // Subtrai 1 de vida do inimigo
             this.health--
-
+            
             // Troca o background image para o primeiro frame da animação, evita instabilidades
             this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt0.png)`
             // Inimigo sendo atacado pela direita
@@ -252,7 +252,7 @@ class Enemy {
                         this.enemyElement.classList.remove("enemyHitRight")
                         // Volta background image para a original
                         this.enemyElement.style.backgroundImage = `url(src/img/skeleton.gif)`
-                        console.log("end hit")
+                        // console.log("end hit")
                         // Reabilita movimentação
                         this.movingEnabled = true
                         // Reabilita a hitbox
@@ -320,13 +320,13 @@ class Enemy {
             this.movingEnabled = false;
             // Marca attackCooldown = true
             this.attackCooldown = true;
-            console.log(`#${this.id} is charging a hit`)
+            // console.log(`#${this.id} is charging a hit`)
+            this.enemyElement.children[0].classList.add("hitting")
             // Primeiro timeout (800ms) - Inimigo inicia o golpe (inicia animação)
             setTimeout(() => {
-                console.log(`#${this.id} tried to hit`)
-                // Animação de hit
-                this.enemyElement.style.border = '1px solid red'
+                // console.log(`#${this.id} tried to hit`)
                 // Verifica se o hit acertou um player
+                console.log(`#${this.id} verifying hit`)
                 // TODO
                 // Segundo timeout (100ms) - Inimigo finaliza o golpe
                 setTimeout(() => {
@@ -335,7 +335,7 @@ class Enemy {
                     // Marca attackCooldown = false;
                     this.attackCooldown = false
                     // (temporario)
-                    this.enemyElement.style.border = '0'
+                    this.enemyElement.children[0].classList.remove("hitting")
                 }, 100);
             }, 800);
 
