@@ -302,8 +302,10 @@ class Enemy {
     die() {
         // Método responsável por eliminar inimigo
         console.log(`#${this.id} die`)
+        // Remove elemento referente a essa instância de inimigo
         this.enemyElement.remove()
 
+        // Remove essa instãncia de inimigo do Array enemies
         for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
             if (Enemy.enemies[i].id == this.id) {
                 Enemy.enemies.splice(i, 1)
@@ -312,16 +314,27 @@ class Enemy {
     }
 
     attack() {
+        // Se não houver cooldown, bate
         if (this.attackCooldown == false) {
+            // Desabilita movimentação
             this.movingEnabled = false;
+            // Marca attackCooldown = true
             this.attackCooldown = true;
             console.log(`#${this.id} is charging a hit`)
+            // Primeiro timeout (800ms) - Inimigo inicia o golpe (inicia animação)
             setTimeout(() => {
                 console.log(`#${this.id} tried to hit`)
+                // Animação de hit
                 this.enemyElement.style.border = '1px solid red'
+                // Verifica se o hit acertou um player
+                // TODO
+                // Segundo timeout (100ms) - Inimigo finaliza o golpe
                 setTimeout(() => {
-                    this.movingEnabled = true;
+                    // Reabilita movimentação
+                    this.movingEnabled = true
+                    // Marca attackCooldown = false;
                     this.attackCooldown = false
+                    // (temporario)
                     this.enemyElement.style.border = '0'
                 }, 100);
             }, 800);
