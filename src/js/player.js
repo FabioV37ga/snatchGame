@@ -137,4 +137,7 @@ class Player {
 
         }
     }
+    static hurt(){
+        console.log("Player has been hit")
+    }
 }

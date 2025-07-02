@@ -12,6 +12,8 @@ class Enemy {
     movingEnabled = true;
     attackCooldown = false;
     hurtState = 0;
+    facingDirection = "right";
+    isAlive = true;
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -195,13 +197,13 @@ class Enemy {
             case "left":
                 this.x1 -= 1
                 this.x2 = this.x1 + 45
-                this.faceDirection("right")
+                this.faceDirection("left")
                 this.enemyElement.style.left = this.x1 + 'px'
                 break;
             case "right":
                 this.x1 += 1
                 this.x2 = this.x1 + 45
-                this.faceDirection("left")
+                this.faceDirection("right")
                 this.enemyElement.style.left = this.x1 + 'px'
                 break;
         }
@@ -210,12 +212,14 @@ class Enemy {
         // Método responsável por trocar visualmente a direção onde o inimigo está olhando
         switch (direction) {
             case "right":
-                this.enemyElement.classList.remove("playerLeft")
-                this.enemyElement.classList.add("playerRight")
+                this.enemyElement.classList.remove("enemyLeft")
+                this.enemyElement.classList.add("enemyRight")
+                this.facingDirection = 'right'
                 break;
             case "left":
-                this.enemyElement.classList.remove("playerRight")
-                this.enemyElement.classList.add("playerLeft")
+                this.enemyElement.classList.remove("enemyRight")
+                this.enemyElement.classList.add("enemyLeft")
+                this.facingDirection = 'left'
                 break;
         }
     }
@@ -231,7 +235,7 @@ class Enemy {
 
             // Subtrai 1 de vida do inimigo
             this.health--
-            
+
             // Troca o background image para o primeiro frame da animação, evita instabilidades
             this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt0.png)`
             // Inimigo sendo atacado pela direita
@@ -304,7 +308,7 @@ class Enemy {
         console.log(`#${this.id} die`)
         // Remove elemento referente a essa instância de inimigo
         this.enemyElement.remove()
-
+        this.isAlive = false
         // Remove essa instãncia de inimigo do Array enemies
         for (let i = 0; i <= Enemy.enemies.length - 1; i++) {
             if (Enemy.enemies[i].id == this.id) {
@@ -316,18 +320,28 @@ class Enemy {
     attack() {
         // Se não houver cooldown, bate
         if (this.attackCooldown == false) {
+            var audio = new Audio("src/sound/skeletonAttack.mp3")
+            audio.volume = 0.1
             // Desabilita movimentação
             this.movingEnabled = false;
             // Marca attackCooldown = true
             this.attackCooldown = true;
             // console.log(`#${this.id} is charging a hit`)
             this.enemyElement.children[0].classList.add("hitting")
+            // Timeout para o som de ataque
+            setTimeout(() => {
+                if (this.isAlive == true)
+                    audio.play()
+            }, 650);
             // Primeiro timeout (800ms) - Inimigo inicia o golpe (inicia animação)
             setTimeout(() => {
                 // console.log(`#${this.id} tried to hit`)
                 // Verifica se o hit acertou um player
-                console.log(`#${this.id} verifying hit`)
+                // console.log(`#${this.id} verifying hit`)
                 // TODO
+                if (checkHit(this.facingDirection) == true) {
+                    Player.hurt()
+                }
                 // Segundo timeout (100ms) - Inimigo finaliza o golpe
                 setTimeout(() => {
                     // Reabilita movimentação
@@ -339,6 +353,45 @@ class Enemy {
                 }, 100);
             }, 800);
 
+        }
+
+        var self = this
+
+        function checkHit(direction) {
+            var hitboxY1 = self.y1 + 30
+            var hitboxY2 = self.y2 - 30
+            var hitboxX1;
+            var hitboxX2;
+
+            switch (direction) {
+                case "right":
+
+                    hitboxX1 = self.x1
+                    hitboxX2 = self.x2 + 30
+
+                    if (Player.x1 <= hitboxX2 && Player.x1 >= hitboxX1) {
+                        for (let i = hitboxY1; i <= hitboxY2; i++) {
+                            if (i >= Player.y1 && i <= Player.y2) {
+                                // console.log("Enemy has hit player")
+                                return true
+                            }
+                        }
+                    }
+                    break;
+                case "left":
+                    hitboxX1 = self.x1 - 30
+                    hitboxX2 = self.x2
+
+                    if (Player.x2 >= hitboxX1 && Player.x2 <= hitboxX2) {
+                        for (let i = hitboxY1; i <= hitboxY2; i++) {
+                            if (i >= Player.y1 && i <= Player.y2) {
+                                // console.log("Enemy has hit player")
+                                return true
+                            }
+                        }
+                    }
+                    break;
+            }
         }
     }
 }
