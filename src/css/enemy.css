@@ -16,9 +16,9 @@
     background-position-x: -4px;
 }
 
-.enemyRight {
-    /* none */
-}
+/* .enemyRight {
+ 
+} */
 
 .enemyLeft {
     transform: scaleX(-1);
