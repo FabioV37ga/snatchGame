@@ -5,7 +5,15 @@ var images = [
     "src/img/attack/attack1.png",
     "src/img/attack/attack2.png",
     "src/img/attack/attack3.png",
-    "src/img/attack/attack4.png"
+    "src/img/attack/attack4.png",
+    "src/img/skeletonHurt/skeleton_hurt0.png",
+    "src/img/skeletonHurt/skeleton_hurt1.png",
+    "src/img/skeletonHurt/skeleton_hurt2.png",
+    "src/img/skeletonHurt/skeleton_hurt3.png",
+    "src/img/skeletonHurt/skeleton_hurt4.png",
+    "src/img/skeletonHurt/skeleton_hurt5.png",
+    "src/img/skeletonHurt/skeleton_hurt6.png",
+    "src/img/skeletonHurt/skeleton_hurt7.png",
 
 ]
 var audios = [

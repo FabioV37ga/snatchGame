@@ -8,7 +8,7 @@
 .skeleton {
     top: 350px;
     left: 470px;
-    background: url(../img/skeleton.gif);
+    /* background-image: url(../img/skeleton.gif); */
     background-position-x: -17px;
     background-position-y: -60px;
     background-size: 130px;

@@ -8,9 +8,10 @@ class Enemy {
     x2;
     y2;
     enemyElement;
-    movingEnabled = true;
     health;
+    movingEnabled = true;
     attackCooldown = false;
+    hurtState = 0;
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -53,7 +54,8 @@ class Enemy {
             left: this.x1,
             top: this.y1,
             width: this.x2 - this.x1,
-            height: this.y2 - this.y1
+            height: this.y2 - this.y1,
+            backgroundImage: `url(src/img/skeleton.gif)`
         })
 
         $(".player").after(elementoEnemy)
@@ -224,57 +226,76 @@ class Enemy {
     }
 
     hurt(direction) {
-        // Audio de hurt
-        var audio = new Audio("src/sound/bone.mp3")
-        audio.volume = 0.08
-        audio.play()
+        // Marca hurtstate como 1, servindo como um cooldown para que possa ser atacado novamente
+        if (this.hurtState == 0) {
+            this.hurtState = 1;
+            // Audio de hurt
+            var audio = new Audio("src/sound/bone.mp3")
+            audio.volume = 0.08
+            audio.play()
 
-        this.health--
+            this.health--
 
-        // Inimigo sendo atacado pela direita
-        if (direction == "right") {
-            // Desabilita a movimentação do inimigo
-            this.movingEnabled = false;
-            // Adiciona animação do inimigo sendo atacado (Jogado para o lado)
-            this.enemyElement.classList.add("enemyHitRight")
-            // Adiciona animação do inimigo sendo atacado (Ficando vermelho)
-            this.enemyElement.style.backgroundImage = 'url(src/img/skeleton_hurt.gif)'
+            // Inimigo sendo atacado pela direita
+            if (direction == "right") {
+                // Desabilita a movimentação do inimigo
+                this.movingEnabled = false;
+                // Adiciona animação do inimigo sendo atacado (Jogado para o lado)
+                this.enemyElement.classList.add("enemyHitRight")
 
-            // Depois de .3s (Tempo da animação), retorna os estados visuais originais 
-            setTimeout(() => {
-                this.enemyElement.style.backgroundImage = 'url(src/img/skeleton.gif)'
-                this.enemyElement.classList.remove("enemyHitRight")
-            }, 300);
-            // Depois de .5s (Tempo de recuperação do inimigo), habilita movimentação novamente
-            setTimeout(() => {
-                this.movingEnabled = true;
-            }, 500);
-        }
-        // Inimigo sendo atacado pela esquerda
-        if (direction == "left") {
-            // Desabilita a movimentação do inimigo
-            this.movingEnabled = false;
-            // Adiciona animação do inimigo sendo atacado (Jogado pro lado)
-            this.enemyElement.classList.add("enemyHitLeft")
-            // Adiciona animação do inimigo sendo atacado (Ficando vermelho)
-            this.enemyElement.style.backgroundImage = 'url(src/img/skeleton_hurt.gif)'
+                // Adiciona animação do inimigo sendo atacado (Ficando vermelho)
+                var animationFrame = 0;
+                var intervaloAnimacao = setInterval(() => {
+                    if (animationFrame <= 7) {
+                        this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt${animationFrame}.png)`
+                    } else {
+                        this.enemyElement.classList.remove("enemyHitRight")
+                        this.enemyElement.style.backgroundImage = `url(src/img/skeleton.gif)`
+                        console.log("end hit")
+                        clearInterval(intervaloAnimacao)
+                    }
+                    animationFrame++
+                }, 100);
 
-            // Depois de .3s (Tempo da animação), retorna os estados visuais originais
-            setTimeout(() => {
-                this.enemyElement.style.backgroundImage = 'url(src/img/skeleton.gif)'
-                this.enemyElement.classList.remove("enemyHitLeft")
-            }, 300);
-            // Deopis de .5s (Tempo de recuperação do inimigo), habilita a movimentação novamente
-            setTimeout(() => {
-                this.movingEnabled = true;
-            }, 500);
-        }
-        // Ao final das animações, verifica a vida dessa instância, se for 0, o inimigo morre
-        setTimeout(() => {
-            if (this.health == 0) {
-                this.die()
+                // Depois de .5s (Tempo de recuperação do inimigo), habilita movimentação novamente
+                setTimeout(() => {
+                    this.movingEnabled = true;
+                    this.hurtState = 0;
+                }, 500);
             }
-        }, 300);
+            // Inimigo sendo atacado pela esquerda
+            if (direction == "left") {
+                // Desabilita a movimentação do inimigo
+                this.movingEnabled = false;
+                // Adiciona animação do inimigo sendo atacado (Jogado pro lado)
+                this.enemyElement.classList.add("enemyHitLeft")
+
+                // Adiciona animação do inimigo sendo atacado (Ficando vermelho)
+                var animationFrame = 0;
+                var intervaloAnimacao = setInterval(() => {
+                    if (animationFrame <= 7) {
+                        this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt${animationFrame}.png)`
+                    } else {
+                        this.enemyElement.classList.remove("enemyHitLeft")
+                        this.enemyElement.style.backgroundImage = `url(src/img/skeleton.gif)`
+                        clearInterval(intervaloAnimacao)
+                    }
+                    animationFrame++
+                }, 100);
+
+                // Deopis de .5s (Tempo de recuperação do inimigo), habilita a movimentação novamente
+                setTimeout(() => {
+                    this.movingEnabled = true;
+                    this.hurtState = 0;
+                }, 500);
+            }
+            // Ao final das animações, verifica a vida dessa instância, se for 0, o inimigo morre
+            setTimeout(() => {
+                if (this.health == 0) {
+                    this.die()
+                }
+            }, 300);
+        }
     }
 
     die() {
