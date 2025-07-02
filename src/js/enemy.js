@@ -96,11 +96,6 @@ class Enemy {
         var sightX2 = this.x2 + 150
         var sightY2 = this.y2 + 150
 
-        var rangeX1 = this.x1
-        var rangeY1 = this.y1;
-        var rangeX2 = this.x2
-        var rangeY2 = this.y2;
-
         var self = this;
 
         function checkX() {
@@ -124,10 +119,10 @@ class Enemy {
                 if (checkY())
                     if (checkY()[0] == true) {
                         // Player está dentro do range do hit do inimigo
-                        if ((Player.x1 >= rangeX1 && Player.x1 <= rangeX2) ||
-                            Player.x2 >= rangeX1 && Player.x2 <= rangeX2) {
-                            if ((Player.y1 >= rangeY1 && Player.y1 <= rangeY2) ||
-                                Player.y2 >= rangeY1 && Player.y2 <= rangeY2) {
+                        if ((Player.x1 >= self.x1 && Player.x1 <= self.x2) ||
+                            Player.x2 >= self.x1 && Player.x2 <= self.x2) {
+                            if ((Player.y1 >= self.y1 && Player.y1 <= self.y2) ||
+                                Player.y2 >= self.y1 && Player.y2 <= self.y2) {
                                 // console.log("Enemy.hit")
                                 self.attack()
                             }
@@ -234,8 +229,11 @@ class Enemy {
             audio.volume = 0.08
             audio.play()
 
+            // Subtrai 1 de vida do inimigo
             this.health--
 
+            // Troca o background image para o primeiro frame da animação, evita instabilidades
+            this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt0.png)`
             // Inimigo sendo atacado pela direita
             if (direction == "right") {
                 // Desabilita a movimentação do inimigo
@@ -247,21 +245,22 @@ class Enemy {
                 var animationFrame = 0;
                 var intervaloAnimacao = setInterval(() => {
                     if (animationFrame <= 7) {
+                        // Troca frames de animação
                         this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt${animationFrame}.png)`
                     } else {
+                        // Ao final da animação, remove classes de animação
                         this.enemyElement.classList.remove("enemyHitRight")
+                        // Volta background image para a original
                         this.enemyElement.style.backgroundImage = `url(src/img/skeleton.gif)`
                         console.log("end hit")
+                        // Reabilita movimentação
+                        this.movingEnabled = true
+                        // Reabilita a hitbox
+                        this.hurtState = 0;
                         clearInterval(intervaloAnimacao)
                     }
                     animationFrame++
                 }, 100);
-
-                // Depois de .5s (Tempo de recuperação do inimigo), habilita movimentação novamente
-                setTimeout(() => {
-                    this.movingEnabled = true;
-                    this.hurtState = 0;
-                }, 500);
             }
             // Inimigo sendo atacado pela esquerda
             if (direction == "left") {
@@ -274,21 +273,23 @@ class Enemy {
                 var animationFrame = 0;
                 var intervaloAnimacao = setInterval(() => {
                     if (animationFrame <= 7) {
+                        // Troca frames de animação
                         this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt${animationFrame}.png)`
                     } else {
+                        // Ao final da animação, remove classes de animação
                         this.enemyElement.classList.remove("enemyHitLeft")
+                        // volta background image para a original
                         this.enemyElement.style.backgroundImage = `url(src/img/skeleton.gif)`
+                        // Reabilita movimentação
+                        this.movingEnabled = true
+                        // Reabilita a hitbox;
+                        this.hurtState = 0;
                         clearInterval(intervaloAnimacao)
                     }
                     animationFrame++
                 }, 100);
-
-                // Deopis de .5s (Tempo de recuperação do inimigo), habilita a movimentação novamente
-                setTimeout(() => {
-                    this.movingEnabled = true;
-                    this.hurtState = 0;
-                }, 500);
             }
+
             // Ao final das animações, verifica a vida dessa instância, se for 0, o inimigo morre
             setTimeout(() => {
                 if (this.health == 0) {
