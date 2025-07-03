@@ -14,6 +14,7 @@ class Enemy {
     hurtState = 0;
     facingDirection = "right";
     isAlive = true;
+    damage;
 
     constructor(type, x1, y1) {
         this.id = Enemy._ID;
@@ -26,7 +27,8 @@ class Enemy {
         this.x2 = this.x1 + 35;
         this.y2 = this.y1 + 50;
 
-        this.health = 3
+        this.health = 30
+        this.damage = 10
 
         this.createEnemy()
         Enemy.enemies.push(this)
@@ -224,7 +226,7 @@ class Enemy {
         }
     }
 
-    hurt(direction) {
+    hurt(direction, damage) {
         // Marca hurtstate como 1, servindo como um cooldown para que possa ser atacado novamente
         if (this.hurtState == 0) {
             this.hurtState = 1;
@@ -234,7 +236,7 @@ class Enemy {
             audio.play()
 
             // Subtrai 1 de vida do inimigo
-            this.health--
+            this.health -= damage;
 
             // Troca o background image para o primeiro frame da animação, evita instabilidades
             this.enemyElement.style.backgroundImage = `url(src/img/skeletonHurt/skeleton_hurt0.png)`
@@ -326,7 +328,7 @@ class Enemy {
             this.movingEnabled = false;
             // Marca attackCooldown = true
             this.attackCooldown = true;
-            // console.log(`#${this.id} is charging a hit`)
+            // (Temporario) Animação de hit do inimigo
             this.enemyElement.children[0].classList.add("hitting")
             // Timeout para o som de ataque
             setTimeout(() => {
@@ -335,12 +337,9 @@ class Enemy {
             }, 650);
             // Primeiro timeout (800ms) - Inimigo inicia o golpe (inicia animação)
             setTimeout(() => {
-                // console.log(`#${this.id} tried to hit`)
                 // Verifica se o hit acertou um player
-                // console.log(`#${this.id} verifying hit`)
-                // TODO
                 if (checkHit(this.facingDirection) == true) {
-                    Player.hurt()
+                    Player.hurt(this.damage)
                 }
                 // Segundo timeout (100ms) - Inimigo finaliza o golpe
                 setTimeout(() => {
@@ -351,7 +350,7 @@ class Enemy {
                     // (temporario)
                     this.enemyElement.children[0].classList.remove("hitting")
                 }, 100);
-            }, 800);
+            }, 1000);
 
         }
 

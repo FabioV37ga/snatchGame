@@ -6,6 +6,10 @@ class Player {
     static attackCooldown = false;
     static isRunning = false;
     static facingDirection = 'left';
+    static hurtState = 0;
+    static health = 50
+    static damage = 10
+    static isAlive = true;
 
     static player = document.querySelector(".player")
 
@@ -117,8 +121,8 @@ class Player {
                     case 'right':
                         if (Enemy.enemies[i].x2 >= Player.x1) {
                             if (Enemy.enemies[i].x1 - 15 <= Player.x2 && Enemy.enemies[i].x2 >= Player.x2) {
-                                if (Enemy.enemies[i].y1 < Player.y2 && Enemy.enemies[i].y2 > Player.y1){
-                                    Enemy.enemies[i].hurt("right")
+                                if (Enemy.enemies[i].y1 < Player.y2 && Enemy.enemies[i].y2 > Player.y1) {
+                                    Enemy.enemies[i].hurt("right", Player.damage)
                                 }
                             }
                         }
@@ -126,8 +130,8 @@ class Player {
                     case 'left':
                         if (Enemy.enemies[i].x1 <= Player.x2) {
                             if (Enemy.enemies[i].x2 + 15 >= Player.x1 && Enemy.enemies[i].x1 <= Player.x1) {
-                                if (Enemy.enemies[i].y1 < Player.y2 && Enemy.enemies[i].y2 > Player.y1){
-                                    Enemy.enemies[i].hurt("left")
+                                if (Enemy.enemies[i].y1 < Player.y2 && Enemy.enemies[i].y2 > Player.y1) {
+                                    Enemy.enemies[i].hurt("left", Player.damage)
                                 }
                             }
                         }
@@ -137,7 +141,39 @@ class Player {
 
         }
     }
-    static hurt(){
-        console.log("Player has been hit")
+    static hurt(damage) {
+        // console.log("Player has been hit")
+        if (Player.hurtState == 0 && Player.isAlive == true) {
+            Player.health -= damage
+
+            Player.hurtState = 1
+            var animationFrame = 0;
+            Player.player.backgroundImage = `url(src/img/playerHurt/mageHurt0.png)`
+            var intervaloAnimacao = setInterval(() => {
+                console.log(animationFrame)
+
+                if (animationFrame <= 3) {
+                    Player.player.style.backgroundImage = `url(src/img/playerHurt/mageHurt${animationFrame}.png)`
+                }
+                if (animationFrame == 4) {
+                    Player.player.style.backgroundImage = "url(src/img/mage.gif)"
+                    Player.hurtState = 0
+                    clearInterval(intervaloAnimacao)
+                }
+                animationFrame++
+                if (Player.health == 0) {
+                    clearInterval(intervaloAnimacao)
+                    Player.die()
+                }
+            }, 200);
+        }
     }
+
+    static die() {
+        console.log("Player.die()")
+        Player.isAlive = false
+        Player.player.style.backgroundImage = ""
+    }
+
+
 }
