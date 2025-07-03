@@ -14,6 +14,10 @@ var images = [
     "src/img/skeletonHurt/skeleton_hurt5.png",
     "src/img/skeletonHurt/skeleton_hurt6.png",
     "src/img/skeletonHurt/skeleton_hurt7.png",
+    "src/img/playerHurt/mageHurt0.png",
+    "src/img/playerHurt/mageHurt1.png",
+    "src/img/playerHurt/mageHurt2.png",
+    "src/img/playerHurt/mageHurt3.png"
 
 ]
 var audios = [
