@@ -12,6 +12,7 @@ class Binds {
     static down = false;
     static right = false;
     static left = false;
+    static run = false
 
     static inicializar() {
         var playarea = document.querySelector("body")
@@ -66,6 +67,7 @@ class Binds {
             }
             if (e.keyCode == 16) {
                 Player.run()
+                Binds.run == true
             }
             if (e.keyCode == 13) {
                 Enemy.alwaysCheck()
@@ -75,6 +77,7 @@ class Binds {
         playarea.addEventListener("keyup", function (e) {
             if (e.keyCode == 16) {
                 Player.walk()
+                Binds.run == false
             }
         })
 

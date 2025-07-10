@@ -34,3 +34,23 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+
+.player .staminaBar {
+    position: absolute;
+    top: -10px;
+    width: 45px;
+    height: 2px;
+    background: rgb(176, 176, 176);
+    border-radius: 2px;
+    /* transform: scaleX(-1) !important; */
+}
+
+.playerRight .staminaBar {
+    transform: scaleX(-1);
+}
+
+.player .staminaBar .progress {
+    height: inherit;
+    border-radius: inherit;
+    background: rgb(21, 191, 238)
+}

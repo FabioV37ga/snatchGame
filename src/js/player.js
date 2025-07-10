@@ -15,15 +15,22 @@ class Player {
     static player = document.querySelector(".player")
 
     static spawn() {
-        // Controle de stamina
+        // Controle lógico da stamina
         var intervaloStamina = setInterval(() => {
             if (Player.isRunning == true) {
-                Player.stamina -= Player.stamina > 0 ? 2 : 0
+                if ((Binds.up == true || Binds.down == true || Binds.left == true || Binds.right == true)) {
+                    Player.stamina -= Player.stamina > 0 ? 2 : 0
+                    setStaminaBar(Player.stamina)
+                }
             } else {
                 Player.stamina += Player.stamina < 100 ? 0.5 : 0
+                setStaminaBar(Player.stamina)
             }
-            console.log(Player.stamina)
         }, 25);
+        // Controle visual da stamina
+        function setStaminaBar(value) {
+            Player.player.children[1].children[0].style.width = `${value}%`
+        }
     }
 
     static canPlayerMove() {
