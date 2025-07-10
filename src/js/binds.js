@@ -60,20 +60,20 @@ class Binds {
             }
         })
 
-        playarea.addEventListener("keydown", function (e){
-            if(e.keyCode == 32){
+        playarea.addEventListener("keydown", function (e) {
+            if (e.keyCode == 32) {
                 Player.attack()
             }
-            if(e.keyCode == 16){
+            if (e.keyCode == 16) {
                 Player.run()
             }
-            if(e.keyCode == 13){
+            if (e.keyCode == 13) {
                 Enemy.alwaysCheck()
             }
         })
 
-        playarea.addEventListener("keyup", function(e){
-            if (e.keyCode == 16){
+        playarea.addEventListener("keyup", function (e) {
+            if (e.keyCode == 16) {
                 Player.walk()
             }
         })

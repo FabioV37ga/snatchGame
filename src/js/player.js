@@ -9,9 +9,22 @@ class Player {
     static hurtState = 0;
     static health = 50
     static damage = 10
+    static stamina = 100
     static isAlive = true;
 
     static player = document.querySelector(".player")
+
+    static spawn() {
+        // Controle de stamina
+        var intervaloStamina = setInterval(() => {
+            if (Player.isRunning == true) {
+                Player.stamina -= Player.stamina > 0 ? 2 : 0
+            } else {
+                Player.stamina += Player.stamina < 100 ? 0.5 : 0
+            }
+            console.log(Player.stamina)
+        }, 25);
+    }
 
     static canPlayerMove() {
         if (Binds.up == true && Binds.down == false) {

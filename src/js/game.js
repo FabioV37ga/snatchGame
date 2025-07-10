@@ -6,11 +6,17 @@ class Game {
         Player.player.style.left = `${Player.x1}px`
         Player.player.style.top = `${Player.y1}px`
 
+        Player.spawn();
+
         walk()
         function walk() {
+            // Função para movimentar o jogador (Andando)
             var intervaloWalk = setInterval(() => {
+                // Enquanto algum estado das binds de movimentação for true, movimenta o jogador na velocidade de caminhar
                 if (Binds.up == true || Binds.down == true || Binds.left == true || Binds.right == true) {
+                    // Verifica se o jogador pode andar
                     Player.canPlayerMove()
+                    // Caso o jogador comece a correr, desabilita a função de andar e habilita a de correr
                     if (Player.isRunning == true) {
                         run()
                         clearInterval(intervaloWalk)
@@ -18,11 +24,17 @@ class Game {
                 }
             }, 10);
         }
+
+        // Função para movimentar o jogador (Correndo)
         function run() {
             var intervaloRun = setInterval(() => {
+                // Enquanto algum estado das binds de movimentação for true, movimenta o jogador na velocidade de correr
                 if (Binds.up == true || Binds.down == true || Binds.left == true || Binds.right == true) {
+                    // Verifica se o jogador pode andar
                     Player.canPlayerMove()
-                    if (Player.isRunning == false) {
+                    // Se o jogador parar de correr, desabilta a função de correr e habilita a de andar
+                    if (Player.isRunning == false || Player.stamina <= 0) {
+                        
                         walk()
                         clearInterval(intervaloRun)
                     }

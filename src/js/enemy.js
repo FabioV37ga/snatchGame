@@ -395,7 +395,6 @@ class Enemy {
     }
 }
 
-
 var skeleton1 = new Enemy('skeleton', 470, 650)
 var skeleton2 = new Enemy('skeleton', 770, 350)
 var skeleton3 = new Enemy('skeleton', 270, 350)
