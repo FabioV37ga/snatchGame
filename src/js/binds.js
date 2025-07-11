@@ -20,19 +20,23 @@ class Binds {
         // Binds de movimentação:
         // Detecta quando usuário aperta um botão de movimentação
         playarea.addEventListener("keydown", function (e) {
-            switch (e.key.toLowerCase()) {
+            switch (e.key) {
+                case 'W':
                 case 'w':
                 case "ArrowUp":
                     Binds.up = true;
                     break;
+                case 'S':
                 case 's':
                 case "ArrowDown":
                     Binds.down = true;
                     break;
+                case 'D':
                 case 'd':
                 case "ArrowRight":
                     Binds.right = true;
                     break;
+                case 'A':
                 case 'a':
                 case "ArrowLeft":
                     Binds.left = true;
@@ -41,19 +45,23 @@ class Binds {
         })
         // Detecta quando usuário solta um botão de movimentação
         playarea.addEventListener("keyup", function (e) {
-            switch (e.key.toLowerCase()) {
+            switch (e.key) {
+                case 'W':
                 case 'w':
                 case "ArrowUp":
                     Binds.up = false;
                     break;
+                case 'S':
                 case 's':
                 case "ArrowDown":
                     Binds.down = false;
                     break;
+                case 'D':
                 case 'd':
                 case "ArrowRight":
                     Binds.right = false;
                     break;
+                case 'A':
                 case 'a':
                 case "ArrowLeft":
                     Binds.left = false;
